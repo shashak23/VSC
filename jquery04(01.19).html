@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- jquery를 사용하기 위한 cdn 설정! -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" 
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" 
+    crossorigin="anonymous">
+</script>
+
+
+<script src="./js/jQuery04(01.19).js"></script>
+    <title>예제3</title>
+</head>
+<br><br>
+<body>
+    <div id="outerDiv">
+        <h1>여기는 h1 영역입니다</h1>
+           <div id="innerDiv">
+             <ul>
+               <li>홍길동</li>
+               <li>김길동</li>
+             </ul>
+           </div>
+    </div>
+    <button class="btn btn-primary"
+            onclick="myFun()">!! 클릭 !!</button>
+    <br><br>
+    <!-- 한줄짜리 입력상자(text field) 설정하기 -->
+    <!-- input은 텍스트상자에요 ㅎㅎ -->
+    <!-- <input type="text" id="myID" size="20"> -->
+    <div class="input-group">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input">
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with radio button">
+      </div>
+      <button class="btn btn-primary"
+      onclick="display_input()">!! 입력상자 !!</button>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<style>  
+     /*css 주석*/
+     /*css를 작성하는 곳이에요!*/
+     h1 {  /*내가 적용할 스타일을 넣기*/
+        color:chocolate ;   /*정해진 언어를 사용해도 되지만 16진수를 이용해서 할수도 있음*/
+        background-color:aqua ;  /*h1의 배경 색(한줄전체)*/
+
+     }
+
+     img {
+
+         width:200px ;  /*px을 사용해서 줄이기*/
+
+     }
+     /*서로 다른 언어(html, css)가 너무 많이 모여있으니까
+    이걸 link tag를 통해 조절해요!*/
+
+    </style>

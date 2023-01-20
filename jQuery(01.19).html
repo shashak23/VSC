@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- jquery를 사용하기 위한 cdn 설정! -->
+    <!-- jqueyr 공홈에서 복붙하기 -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" 
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" 
+    crossorigin="anonymous">
+</script>
+<script src="./js/jQuery01(01.19).js"></script>
+    <!-- bootstrap을  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+
+
+    <title>Document</title>
+    <!-- <style>
+        /* class에 적용하기 위한 style */
+        .myStyle {
+            color : red;
+        }
+    </style> -->
+</head>
+<body>
+    <!-- 브라우저에서 사용자가 발생시킬 수 있는
+    event의 종류가 정해져 있어요.
+    click, dbclick, change, mouseover, mouseenter,
+    mouseleave, keypress, keyup, keydown... -->
+
+    <!-- html의 입장에서 처리할 수 있는 이벤트가 있어요.
+    (js의 입장에서 처리하는 이벤트는 또 입장이 달라요~)
+    물론 쉬운 방법으로 evenet처리를 할 수 있도록 해요!
+    => inline event model
+    tag의 속성을 이용해서 event를 처리하는 방식 -->
+
+    <!-- 사용하는 속성은 on + event이름 -->
+    <!-- select onchange 를 하면 벼화를 할 때 마다 on하여 
+    이벤트를 다 처리함 -->
+    <select onchange="myFunc()">
+        <!-- select에 자식으로 있는 옵션을 다 찾기
+        js에서 변경 -->
+      <option>홍길동</option>
+      <option>신사임당</option>
+      <option>강감찬</option>
+      <option>이순신</option>
+    </select>
+    <br><br>
+    <!-- 발생한 evet source : div elements가 되요! (의미는 맞지만
+         element가 이벤트 소스는 아님)
+         정확히는 DOM안에 있는 div element로 만든 node를 지칭해
+         결국 객체임! -->
+    <!-- div에서 사용자를 클릭하도록 JS를 연결
+         여기서 myFunc()는 '딜리게션 모델의 이벤트 핸들러' -->
+    <div>여기에 선택된 사람이 출력되요</div>
+    <!-- 그냥 클릭으로 하면 그 리스트 중 선택지를 클릭 할 때 마다 이벤트가 처리되서
+    안 좋으니까! 변경 될 때 마다 처리할 수 있는 tag를 넣어야 해요
+    여기서 select의 내용을 바뀔 때 처리될 수 있도록 select 변경-->
+    <br><br>
+    <input type="button" value="서버로 전송">
+    <br><br>
+    <button class="btn btn-info">이것도 서버의 버튼이에요</button>
+    <!-- reference를 보면 버튼들을 다양하게 만들어 볼 수 있어요 -->
+    <!-- button class = mystyle 이라고 정하기 -->
+    <!-- 버튼을 만들때에는 주로 밑에 저걸로 만들어요~
+    css에 적용하기 위해 있는 tag에요 -->
+</body>
+</html>

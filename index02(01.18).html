@@ -1,0 +1,46 @@
+<!-- 글바 / 공백잡기 / 이미지 표현하기 / 링크만들기 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>큰 글자로 출력하는 헤드라인 heading 1</h1>
+    <div>소리없는 아우성 div는 다른 태그를 포함시키기 위한 용도라서 큰 기능은 없다.</div>
+    <span>이것도 영역을 잡는 tag에요.</span>
+    <span>호호호</span>
+    <!-- 
+        여기까지 div, span은 영역을 잡는 tag이다 -->
+    <!-- tag는 대소문자 구분 하지 않아요 -->
+    <!-- 1. 글자 만들기
+        실제로 브라우저에 보이는 글자크기 또는 조절은 빠른 속도로 렌더링을 하는 것(덧씌우기) -->
+    
+        <br> 한줄씩 엔터할 수 있는 tag <br>
+        <!-- -> 좋은 방법은 아니에요 -->
+
+        <div>3줄을 띄워요</div>
+        <!--2. 공백 잡기 
+            공백을 잡으려면 어떻게 해야해요?
+        css를 이용해서 화면 처리를 해야해요!
+        간단하게 하기 위해서는 tag응 제공해줘요 -->
+        <br><br>
+        <!-- 3. 이미지를 표현하기 -->
+        <!-- ./ = 현재 폴더 밑에 img src는 이미지 넣기 tag -->
+        <img src="./image/0118.png" width="200">
+        <img src="./image/0118_1.jpg" width="200">
+        <br><br>
+        <!-- 4. 링크 만들기 
+        hyperlink라고 표현하고 클릭가능한 링크
+        a라는 element => anhchor의 약자 -->
+        <a href="http://www.naver.com">네이버로 가기!</a>
+        <br><br>
+        <!-- 사용자 입력 양식 (특이한 element) -->
+        <!-- input type = "text, checkbox, button, radio
+            를 이용하면 원하는 control을 생성할 수 있어요" -->
+        <input type="checkbox">
+        <textarea>여기는 여러줄!</textarea>
+
+</body>
+</html>
