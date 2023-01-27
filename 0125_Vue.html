@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue.js를 이용해 보아요 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{  message  }}
+        <div id="myDiv"></div>
+        <button v-on:click="myclick">클릭하세요!</button>
+    </div>
+    <!-- 버튼 옆에 핸들러를 명시, method옆에 -->
+    
+    <script> 
+        // Vue instance를 생성
+        // 내가 원하는 일을하는 Vue가 아니기때문에
+        // 내가 원하는 일을 하는 객체로 만들기 위해 
+        // 이걸 인자를 넣어서 
+        new Vue({
+            el:'#app', // 뒤의 el 속성을 보게 된다
+            data: { // 여기까지를 vue 인스턴스라고 함 // 얘를 자신의 변수
+                // vue instacne가 가지고 있는 일을 하고 있는 객체여야 해요
+                message: '소리없는 아우성!'
+                // data가 변하면 자동적으로 위의 내용이 변해요(update)
+                // 일반적응로 instance가 붙은 다음에 변경되는 것인데, 이를 인스턴스 갱신이라고 함
+                // 위에 나와잇는 message 
+            },
+            methods: {  // 얘가 자신의 함수, 객체가 갖는 함수
+                 myFunc: function() {
+                      console.log('여기는 myFunc');
+                 },
+
+                 myclick: function(){
+                       console.log('버튼을 클릭클릭');
+                       const myDiv = document.getElementById('myDiv');
+                       myDiv.innerText = '하이하이'
+                       this.message='message changed'
+
+                 } // 여기에 있어야지 동작을 할 수 있어요!!!!!!!
+            },
+            beforeCreate: function(){
+                // beforeCreate hook method 
+                // instance가 실행되고 가장 처음에 실행되는 life cycle hook 단계
+                // 이 상태가 되면 자동으로 메소드가 호출되요
+                console.log('beforeCreate');
+                // 이 시점에는 data el과 지금은 없지만 method 속성이 오자
+                // 그래서 화면에 부착되지 않은 시점 = 정의되지 않은 시점
+                // console.log(this.data.message); 이렇게는 안되는 거고 되려며(119ㅋ)
+                // 사용하기 이전 상태!!
+            },
+
+            created: function(){
+                // created hook method
+                // 이 시점에는 드디어 내가 가지고 있는 data와 method를 사용할 수 잇어요
+                console.log('여기는 myFunc');  // 소리 없는 아우성
+                console.log(this.message);  // 여기는 myFunc
+            },
+
+            beforeMount: function() {
+            },
+
+            mounted: function(){
+                // 화면에 부착되는 부분
+                console.log('mounted가 호출');
+                // 화면에 vue instance가 붙은 직후에 호출되기 때문에
+                // 화면 제어를 할 수 잇어요 - 화면 처리를 할 수 있다
+                // id를 사용하려면 기존에는 
+                // $('#myDiv').text('하이하이');
+                // document.getElementById('myDiv');
+                const myDiv = document.getElementById('myDiv');
+                myDiv.innerText = '하이하이'
+                
+            },
+
+            beforeUpdate: function(){
+                // data가 변경된 후 버튼을 눌렀을 때 화면이 변경(그리기)되기 전에 일어나는 일
+                // -> 데이터가 변경되지 않으면 바뀌는 것이 없다
+                // 화면을 다시 그리기 전과 후로 두 가지 시점이 있다
+                // 랜더링이 되기 이전의 상태, 변경된 데이터를 가지고 로직처리를 할 수 잇고
+                // console.log('beforeUpdate가 호출');
+                console.log('변경되었어요');
+            },
+
+            updated: function(){
+                console.log('updated가 호출');
+            }
+
+        });
+    </script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 // 어떤 날짜를 가져와도 검색이 되게끔 변수로 미리 잡아두기 함수 만들기 
 
 function Function(){
-    $('tbody').empty();
+    $('tbody').empty(); // empty 후손만 삭제하는 method
     // var targetDt = $("form-control form-control-dark w-100 rounded-0 border-0").val();
     var targetDt ='20230101'
 
@@ -41,6 +41,7 @@ function Function(){
            let titletd = $("<td></td>").text(title)  // <td>title</td> 
            let auditd = $("<td></td>").text(audi)  // <td>title</td> 
            let opendttd = $("<td></td>").text(opendt)  // <td>title</td> 
+           // 삭제버튼 쓰고
 
            //tr하나로 td들을 묶고
            tr.append(checkBox);

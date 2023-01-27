@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- vue.js cdn연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+    <!-- vue router cdn 연결 -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <!-- Axios를 위한 cdn 연결 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+</head>
+<body>
+    <div id="app">
+        <div v-bind:id="myID">소리없는 아우성!</div>
+        <a v-if="flag" href="http://www.naver.com">네이버로 가기!</a>
+        <!-- 내가 가지고 있는 데이터의 특징에 따라 
+             특정 데이터를 날릴수도 있고 보낼수도 있어
+             이때 v-if는 모든 것에 다 붙을 수 있어요, table/div 둘다 가능해요
+             아예 DOM에서 빼버릴건지 결정하기만 하면 되요
+             만약 v-if값이 false이면 DOM에서 제거를 한다 -->
+             <br><br>
+        <a v-show="flag" href="http://www.kakao.com">네이버로 가기!</a>
+        <!-- 만약에 v-show 값이 false이면 화면에서 안보이게 처리
+             되지만 DOM에는 존재함 -->
+        <br><br>
+        <input type="text" v-model="myTxt">
+        <button v-on:click="myfunc">입력상자 안에 내용을 알아보아요 :></button>
+        <!-- 버튼을 눌렀을 때 함수를 호출해요 -->
+        <br><br>
+        <li v-for="names in names">{{names}}</li>
+        <!-- names라는 배열(데이터)안에서 반복할거야 라는 뜻의 코드 -->
+      
+    </div>
+       
+    <script>
+        new Vue({
+            data: {
+                flag: false, //flag라는 view instance가 true임
+                myID: 'myDiv',
+                myTxt:'',
+                names: ['홍길동','김길동','이길동']   // 3명의 이름을 갖고 있는 데이터 배열
+            },
+            methods: {
+                myfunc: function(){
+                    // alert(this.myTxt);  // 버튼을 누르면 이 변수안에 있는 값 나오게하기
+                }
+            },
+            watch:{
+                // 내가 갖고 잇는 데이터, myfunc 등등을 감시하겠어!
+                // 데이터가 변하는 것을 체크할 목적으로~!
+                myTxt: function(){
+                    console.log(this.myTxt + '로 변경되었어요!');
+                }
+            }
+        }).$mount('#app');
+    </script>
+
+</body>
+</html>

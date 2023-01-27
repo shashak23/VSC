@@ -73,7 +73,7 @@
     <link href="./css/dashboard.css" rel="stylesheet">
 
 
-    <script src="./js/jQeury03(01.20).js"></script>
+    <script src="./js/0125_box_pro.js"></script>
     <!-- 대부분 head의 맨 밑에 js연결 : 여기까지 기본 -->
 </head>
 
@@ -85,11 +85,17 @@
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search"
-            aria-label="Search" onkeyup="Function2()">
+        <input class="form-control form-control-dark w-100 rounded-0 border-0" 
+               type="date"  
+               placeholder="Search"
+               aria-label="Search">
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" onclick="Function()" href="#">Search!!</a>
+                <a class="nav-link px-3" 
+                   href="#"
+                   onclick="myFunction()">Search!!</a>
+                   <!-- input type의 text -> date로 전환
+                        href는 자기자신을 반환하는 코드 -->
             </div>
         </div>
     </header>
@@ -121,7 +127,9 @@
                                 <th scope="col">영화제목</th>
                                 <th scope="col">관람객수</th>
                                 <th scope="col">개봉일</th>
-                                <button>버튼</button>
+                                <th scope="col">삭제</th>
+
+                             
                             </tr>
                         </thead>
                         <tbody>

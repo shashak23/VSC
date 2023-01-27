@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- vue.js cdn연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+    <!-- vue router cdn 연결 -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+      <!-- 이번에는 링크를 안하고 
+           근데 router의 view는 꼭 있어야 해요~! -->
+      <router-view></router-view>
+            <!-- router-view를 하면 경로 1개에 뷰 1개를 연결해줘요~ -->
+
+    </div>
+       
+    <script>
+      // member component를 만들겁니다 , 자식을 포함할 수도 아닐수도 있는 컴포넌트
+      let memberCmp={  // 백틱으로 표현
+          template: `<div>여기는 멤버 컴포넌트입니다!
+                    <router-view></router-view>  
+                    </div>`   // 멤버 컴포넌트 내에서 변화가 생겨야 하니까 뷰를 이용
+                    // 컴포넌트 안에서 다시 라우팅을 하는 방법!!!!!!!
+      }
+      // profile component 2개 만들기
+      // 아래의 두개 profile과post가 위의 router-view에 들어가게 됨
+      let profileCmp = {
+        template: '<div>여기는 프로파일 컴포넌트입니다!</div>'
+      } 
+      let postCmp = { // post가 필요해요 
+        template: '<div>여기는 포스트 컴포넌트입니다!</div>'
+      }
+      // 컴포넌트를 다 만들었으니 경로 설정
+      // 어떤 경로가 어떤 컴포넌트와 매칭되는지 설정하기
+      // 경로가 많아서 배열로 잡고 
+      let routes = [{
+      path: '/member',    // 원래는 link에서 정해진 건데 여기서는  ??
+      component: memberCmp,
+      children: [{ // 최종 하위 컴포넌트가 2개이면 2개로 코드 명시, 메스세틱? 라우팅을 표현해줌
+          path: 'profile',   // 위의 member를 기반으로 profile이 나온다면, /member/proile
+          component: profileCmp   // 이 안에서 자식이 라우팅 됨
+          // 멤버 - 하위로 profile -> router-view에 들어감 (구조가 중첩됨)
+      },{
+        path: 'post',   // 위의 member를 기반으로 profile이 나온다면, /member/proile
+          component: postCmp  // /member/post, 멤버-하단에 하위로 붙여져서 -> router-view에 들어감
+
+      }] 
+      }]
+      // 라우터 객체를 생성해야해요
+      // 라우터 객체를 설정해야지 붙겠죠?
+      let router = new VueRouter({
+            routes   // routes 나 routes:routes라고 써도 똑같다
+      })
+
+      new Vue({   // 루트 컴포넌트가 됨
+          router: router  // root에 생성한 라우터 객체를 붙여야지 나오겠죠?
+      }).$mount('#app');
+    </script>
+
+</body>
+</html>

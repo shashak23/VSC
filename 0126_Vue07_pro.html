@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    
+         <!-- jquery를 사용하기 위한 cdn 설정! -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" 
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" 
+    crossorigin="anonymous"></script> 
+
+</head>
+
+<body>
+
+    <div id="app">
+        <global-cmpa v-bind:propsdata="text"></global-cmpa>
+        <global-cmpb v-on:event_textbtn="tText"></global-cmpb>
+       
+    </div>
+   
+    <script> 
+      Vue.component('global-cmpa',{  // 템플릿 뒤에는 엘리먼트가 하나여야 해요 -> `<div></div>`로 감싸야해요
+        //  <my-local-componentsD v-on:event"haha"> </my-local-componentsD>  -- pro
+        template: `<div> {{propsdata}}
+                   <my-local-componentsC></my-local-componentsC> 
+                   <my-local-componentsD v-bind:propsdata="propsdata"></my-local-componentsD>
+                   </div>`,
+        components: {
+            'my-local-componentsC': {
+                 template: '<div>로컬 컴포넌트 C</div>'
+            },
+            'my-local-componentsD': {
+                 template: '<div>처리된 데이터: {{ propsdata }}</div>',  // 여기서 데이터가 찍혀야하니까 공간을 남겨두기
+                 props: {
+                 propsdata: String,  // 전역a에서 넘겨주는 지역d에서 내용 받기
+                }
+            }
+
+        },
+        props: {
+             propsdata: String,  // 루트에서 넘겨주는 전역a에서 내용 받기
+        }
+      });
+      // 이름 끝에 대문자를 넣으면 안돼요!
+      Vue.component('global-cmpb',{
+        template: '<my-local-componentsF v-on:event_textbtn="text"></my-local-componentsF>',  // 하위컴포넌트로 들어올 수 있도록
+        components: {
+            'my-local-componentsF': {
+                // 버튼과 텍스트상자를 생성
+                // 버튼의 상위가 local 이니까 메소드를 갖고 있어야 하고 
+                // 메소드를 생성하고 버튼의 레퍼런스 지정("")
+                // id로 하면 간단하고 빠르게 호출할 수 있으니까 id지정!
+                template: 
+                `
+                <div>
+                      <input type= text id ='inputTxt'>
+                      <button v-on:click="btnClick">클릭클릭!</button>
+                </div>`,
+                methods: {
+                    btnClick: function(){ 
+                        alert($('#inputTxt').val()); // 텍스트 안에 있는 값을 가져와야하니까 
+                        let text = $('#inputTxt').val() // 텍스트 안에 있는 값을 가져와야하니까 
+                        this.$emit('event_textbtn',text); //버튼을 들고 있는 지역 컴포넌트f, 이벤트 발생시키기
+                       
+                    }
+                }
+            }
+         },
+         methods: {  // 지역f의 내용을 넘겨주고 전역b 받기 
+          // haha를 root에 내려주기 haha : function() 이렇게 
+            text: function(text){
+            this.$emit('event_textbtn',text); 
+            }
+         }
+        });
+
+      new Vue({ // root
+        el: '#app',
+          // 받아주기
+          methods: {
+            tText: function(text){
+            this.text = text
+          }  // myFunc: { myfunc: function(data) { this.$emit('enevt-b',data)}}
+        },
+        data: {  
+            text: '' // message : '' 변수는 위에서 지정된 것 
+        }
+        //methods: {
+          // haha: function(data){
+          // console.log('root 입력된 값',data);
+          // this.message = data; //이거는 항상 명시를 해야한다. (data)이렇게 썼을 때
+          // }
+        // }
+      });
+    </script>
+
+</body>
+</html>

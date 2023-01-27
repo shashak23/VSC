@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue.js를 이용해서 cdn을 포함시켜 보아요 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<!-- 컴포넌트 두개를 만들어 봐요 -> 화면 송출 -->
+<body>
+    <div id="app"> 
+        <my-component1></my-component1>
+        <my-component2></my-component2>
+    </div>
+   
+    <script>
+       // 지역 컴포넌트 2개를 만들어서 사용해 보아요 
+       let cmp1 = {
+           template: '<div>첫번째 지역 컴포넌트 : {{ cmp1Data }}</div>', // 해당위치에 템플릿이 연결
+           data: function() {
+              return{
+                  cmp1Data: 100 
+              }
+           }
+       }
+
+       let cmp2 = {
+            template: '<div>두번째 지역 컴포넌트 : {{ cmp2Data }}</div>',
+            data(){
+                return {
+                    // 어떻게 해야 다른 컴포넌트를 서로 쓸 수 있을까요?
+                    // 사실은 안되는 부분 ^-^?! (한 컴포넌트에서 다른 컴포넌트의 데이터를 직업 억세스 하는 건 허용되지 않아요)
+                    cmp2Data: cmp1.data.cmp1Data
+                }
+            }
+       }
+
+       new Vue({
+            el: '#app',
+            components: {   // 각각의 이름을 통해 루트에 지역 컴포넌트를 등록
+                'my-component1' : cmp1,
+                'my-component2' : cmp2
+            }
+       })
+                      
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- vue.js cdn연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+    <!-- vue router cdn 연결 -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <!-- Axios를 위한 cdn 연결 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+<!--  -->
+
+</head>
+<body>
+    <div id="app">
+        <div>" 영화 순위 검색 " </div>
+        <input type="text" v-model="myTxt">
+        <button v-on:click="myFunc">search</button>
+        <!-- 화면에 출력되도록 붙이기 -->
+    </div>
+       
+    <script>
+        // 데이터를 뽑아오기
+        // result가 데이터를 다 가지고 잇으니까
+        // named 구조 활용해서 
+        // 나오는 순위를 named구조로 해서 
+        // 서로 상위 하위 데이터를 받을 수 있도록
+        // 구조를 잡는게 문제겠네
+
+        // 데이터를 하나씩 출력하기를 해서 
+        // 그걸 구조에 적용해서 어떻게 정리할 지가! 중요!
+
+        // 검색이 되서 결과가 나오도록
+
+        // 영화 순위 사이트 연동하기, 데이터 가져오기
+         new Vue({
+            methods: {
+              myFunc: function(){  
+                axios({
+                    async: true, // 당연히 비동기
+                    url:'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json',
+                    method: 'GET', // 기본적인 확인 사항 type - GET / POST 인지 
+                    timeout: 3000,
+                    params: { 
+                        // 서버쪽을 호출할 때 넘겨줘야하는 값
+                        key: 'c605b931f51009d4c53d47069e5b40bd',
+                        targetDt: '20230101'
+                    },
+                    responseType:'json',
+                }).then(function(result){
+                    console.log(result);
+                    console.log(result.data);  // json을 댕길 때 .data를 씀
+                }).catch(function(){
+                    alert('호출 실패');
+                });
+              }
+            },
+            data: {
+                myTxt:''
+            }
+            
+        }).$mount('#app');
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue.js를 이용해서 cdn을 포함시켜 보아요 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <!-- 항상 아래와 같은 구조는 아니라서 참고용으로 해요 -->
+    <!-- 여기서 div id가 root 컴포넌트에요 -->
+    <div id="app">
+        안녕하세요! {{ this.myID }}
+        <mycomponent></mycomponent>
+        <my-local-components></my-local-components>
+        <!-- 이거 결국 날라가서 글자가 돼요...? 이게 무슨 말이지  -->
+        <!-- 여기에다가 객체를 이용한 키 값으로 인스턴스를 명시해준다. -->
+        <!-- local은 하부 컴포넌트로 됨 -->
+    </div>
+    <!-- 뷰 인스턴스가 만들어지면 div di에 부착이 됨 -->
+    <script>
+        //전역 컴포넌트 등록 (전역할지 지역할지 둘 중에 하나는 해야하는데)
+        let myCmp = { 
+            template: '<div>여기는 DIV입니다</div>'
+        }
+
+        // 컴포넌트 등록
+        // 컴포넌트 이름을 케밥케이스가 권장되요
+        // 컴포넌트 이름은 2단어 이상으로 구성되는 것을 권장해요
+        Vue.component('MyComponent', myCmp);
+        // 컴포넌트의 이름은 결국 html태그명으로 사용되요
+        // html에 지역으로 찍히는 부분
+        let localCmp = {
+            template: '<div>여기는 로컬입니다</div>'
+        }  
+
+        new Vue({
+            el: '#app',
+            // template: '<div>소리없는 아우성</div>',
+            data: {
+                myID: '홍길동',
+                myAge: 20
+            },
+            // 여러개가 나올 수 잇으니까 객체로 하고
+            // components라는 속성을 이용해서 객체 형태로 표현
+            components: { // 등록할 수 있음 -> ''은 태그명이 됨
+            // 그리고 지역 컴포넌트니까 new Vue안에서만 동작
+                'my-local-components': localCmp
+            }
+        });
+                      
+    </script>
+
+</body>
+</html>

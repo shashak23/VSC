@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue.js를 이용해서 cdn을 포함시켜 보아요 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        Root component의 변수값은 : {{ myName }}
+       <global-component></global-component>
+       <global-component></global-component>
+       <global-component></global-component>
+    </div>
+   
+    <script>
+        let tmp = {
+            myName: '홍길동',   // constructor
+            myFunc: function(){},  // property(method가 아님)
+            mySum(){               // method
+               // non-construnctor
+            }
+        }
+
+       Vue.component('global-component', {
+        template : '<div>변수의 값은: {{ myData }} </div>',
+        // 통상적으로 this.은 생략해요 this.myData -> myData
+        // root도 하위 컴포넌트로 넣고 data를 넣을 수 있다
+        // 리터럴로 표현함 
+        // data : function() {  
+        //        return {
+        //            myData : 100 
+        //        }; 
+        //  }
+        data() {   // method 표현, 이렇게 많이 써요 
+            return {
+                myData: 200 
+            }
+        } // 앞으로 하위 컴포넌트를 만들 때에는 둘 중에 하나의 방법을 잘 쓰면 돼요
+       });
+
+       new Vue({ // 애가 루트로 만들어서 div에 붙여준 것 
+           el : '#app',   // id값 명시
+           data : {
+               myName : '홍길동'
+           }
+       });    
+                      
+    </script>
+
+</body>
+</html>

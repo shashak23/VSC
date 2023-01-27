@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- vue.js cdn연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+    <!-- vue router cdn 연결 -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <!-- Axios를 위한 cdn 연결 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <button v-on:click="myFunc">AJAX 호출 버튼</button>
+    </div>
+       
+    <script>
+        new Vue({
+            methods: {
+              myFunc: function(){  // 함수리터럴
+                  // 여기에서 AJAX 호출
+                //   alert('호출!!!!!!!!!!!!');  // event처리를 할 줄 알아야 해요!
+                // axios({}) = $.ajax({})
+                axios({    // 성공하면 then호출, 실패하면 catch호출
+                    // 우리 박스오피스 일일순위 이용할거에요
+                    url:'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml',   // 내가 호출할 서버쪽 url
+                    method: 'GET',   // type = method
+                    // data: {
+                        // data는 host 방식이나 hoot이나 delete 메소드 방식에만 적용 가능
+                    // }
+                    params: { 
+                    // parameter의 집합인 'params' = data, 
+                    //query string방식으로 전달되는 데이터를 의미하며 당연히 get방식
+                        key: 'c605b931f51009d4c53d47069e5b40bd',
+                        targetDt: '20230127'
+                    },
+                    responseType:'json'    // 내가 받을 데이터의 형식
+
+                }).then(function(result){
+                    console.log(result.data);  // json을 댕길 때 .data를 씀
+                }).catch(function(){
+                    alert('호출 실패');
+                });   
+              }
+            }
+        }).$mount('#app');
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+<!-- 뷰 라우터를 이용해서 cdn을 포함시켜야 해요
+     링크를 걸어주면 뷰 라우터를 사용할 수 있는데
+     주의점: web에서 뷰라우터 cdn을 검색하면 우리 버전과 맞는 것이 없는데
+             사용하는 library마다 의존성과 연관관계가 있는데
+             그냥 찾으면 Vue.js 3.x버전의 Vue 라우터 CDN을 찾게되서
+             잘 찾아야 해요! =>  -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+      <h1>Vue router 예제</h1>
+      <p>
+         <!-- 링크를 두 개 만들거에요 -->
+         <!-- <a href="">희희</a>
+         <a href="">낙낙</a> -->
+         <router-link to="/main">main component로 이동</router-link>
+         <router-link to="/login">login component로 이동</router-link> 
+      </p>
+      <!-- 위에 link가 view에 나와요, 컴포넌트가 나오는 위치! -->
+      <router-view></router-view>
+    </div>
+       
+    <script> 
+    // main과 login을 작성할거에요
+    let mainCmp = {  // main component만들기
+       template: '<div>main 컴포넌트 들어왔어요</div>'
+    }  
+    let loginCmp = {  // login component만들기
+       template: '<div>login 컴포넌트 들어왔어요</div>'
+    }  
+
+    // 경로 설정하기 : 어떤 경로를 이용하면 어떤 컴포넌트를 사용할 건지를 설정하기
+    // 배열을 이용해서 설정해요 - why? 설정할 경로가 많아서~
+    // 각 경로는 객체로 표현함 우리는 2개 만들거니가 2개 경로 = 2개 객체
+    let routes = [{
+      // 경로인데 고정되는 key 값인 property가 나옴
+      path: '/main',
+      component: mainCmp
+    },{
+      path: '/login',
+      component: loginCmp
+    }]
+     
+    // 이렇게 설정된 경로 정보(=배열)를 이용해서 라우터 객체를 생성
+    // 이를 진행하기 위해 'VueRouter()'라는 생성자 함수를 제공
+    // 라우팅 객체가 라우팅 정보를 갖고 있어야 하겠죠? => new VueRouter({})
+        // routes: routes  // 주의점: 여기서 routes는 고정된 키 값 : routes는 위에서 지정한 이름 
+        // routes  // 이름을 이렇게 잡아서 축약해서 쓸 수 있도록 함
+      let router = new VueRouter({
+        routes
+      })
+          
+      new Vue({
+        // el: '#app', // root컴포넌트에서만 나옵니다.
+        // data: {},
+        // methods: {},
+        // components: {},
+        router: router
+
+      }).$mount('#app');  // el보다 일반적으로 많이 쓰는 거에요
+      // 경로와 컴포넌트 맵핑시키고 정보 넣고 특정 위치에 갖다 넣기 : 라우팅 기본 
+      // 색다른 라우팅 기법도 있지만 일단 기본에 충실합시다
+    
+    </script>
+
+</body>
+</html>

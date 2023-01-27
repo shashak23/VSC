@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <child-component v-bind:propsData="mesl="></child-component> 
+        <!-- ""값을 props data -->
+       
+    </div>
+   
+    <script> 
+    // 전역 컴포넌트를 만들고 하위 컴포넌트를 만들거에요 
+    Vue.component('child-component', {
+        // data(){
+        //     return{
+        //         myData: 200
+        //     }
+        // },
+        // props를 이용해서 상위 컴포넌트가 전달하는 데이터를 받는
+        // 변수를 선언을 합니다 -> 카멜케이스가 기본  
+    //    props: ['propsData','secondData'],  -- 배열형태
+       props: {
+             propsData: String,  // 데이터 타입에 대한 생성자 함수 
+            //  secondData: Number
+       },   // 객체형태
+       template:'<div>여기는 하위 컴포넌트 => {{ propsData }}</div>'
+    })
+    // Vue instance에 하위 컴포넌트로 해당 컴포넌트를 포함시킬거에요
+    new Vue({
+        el: '#app',
+        data: {
+            message : '소리없는 아우성'
+        }
+    })
+    // Vue instance가 상위 component가 되고
+    // 포함되는 전역 컴포넌트는 하위 component가 될 거에요
+    // props를 이용하면 상위 component에서 하위 component로 데이터를 전달할 수 있어요
+    // vue instance에 data를 전역 component에 전달할 수 있어요
+    
+
+    
+    </script>
+
+</body>
+</html>0

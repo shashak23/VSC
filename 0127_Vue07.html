@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- vue.js cdn연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+    <!-- vue router cdn 연결 -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <!-- Axios를 위한 cdn 연결 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+</head>
+<body>
+    <div id="app">
+        <!-- div 안에서 연산(함수호출)이 되나요? => 네, 됩니다.
+             간단한 연산은 수행시킬 수 있어요 -->
+        <div>{{ message }}</div>
+        <div>{{ message + "!!!" }}</div>
+        <!-- 글자를 역순으로 돌리고 싶어요? => 자주 사용되는 방식이에요 -->
+        <!-- {{}}는 가능한 값만 꽝 찍는 역할을 하는게 좋아요
+             가능은 하지만 어쩔 수 없이 하는 경우가 아니고서는
+             일반적으로 {{}}는 화면에 결과만을 출력하기 위한 용돌로 주로 사용되니까 쓰지마요 -->
+             <!-- 그러면 아래는 함수를 따로 만들어서 사용하는게 좋겠죠? -->
+        <!-- <div>{{ message.split('').reverser().join('')}}</div> -->
+
+        <!-- <div>{{ let a = 100; }}</div> <= 이런거는 안됩니다! -->
+        <!-- <div>{{ if(true) {return 100} }}</div> <= 이런것도 안됩니다 -->
+        <!-- 이거는 사망연산자에요! 어떤 조건에 따라 어떤 값을 넣어야 할지 로직처리를 선택할 때! -->
+        <div>{{ true ? 10 : 100 }}</div> 
+        <div>{{ message.split('').reverse().join('') }}</div>
+        <!-- 아래의 함수들은 좋은 것이 아니에요~! 
+             바로 실행된다는 장점이 있지만-->
+        <div>{{ myFunc() }}</div>
+        <!-- 좋은 기능을 가진 것을 써 봅시다, 얘는 method와 같아도 ()안써요 -->
+        <!-- 단, 여러개를 <div>에 올려도 한 번밖에 찍히지 않아요
+             개선 된 값을 캐싱해요. 수정되는 값이 아니면 한번만 나와요. => 효율적
+             호출하지 않아도 함수가 있으면 알아서 계산해요~! -->
+        <div>{{ myComputed }}</div>
+        <div>{{ myComputed }}</div>
+
+    </div>
+       
+    <script>
+        new Vue({
+            data: {
+                message: '눈누난나',
+            },
+            methods: {
+                myFunc: function(){
+                    console.log('함수 호출');
+                    return this.message.split('').reverse().join('');
+                }
+            },
+            // method와 유사한 computed
+            // 이름만 다르고 쓰는 내용은 다 같음
+            computed: {
+                myComputed: function(){
+                    console.log('컴퓨티드 호출');
+                    return this.message.split('').reverse().join('');
+                }
+            }
+        }).$mount('#app');
+    </script>
+
+</body>
+</html>

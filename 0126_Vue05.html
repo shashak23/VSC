@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <child-component v-on:print_msg="printText"></child-component>       
+    </div>
+   <!-- v-on과 v-click은 똑같은 것임 -->
+    <script> 
+    // 하위 -> 상위 전달방식이기때문에 전역 컴포넌트 만들기
+    // 전역 컴포넌트를 만들어서 Root의 하위로 사용
+    Vue.component('child-component',{  // 상위 컴포넌트
+        template: '<button v-on:click="childFunc">클릭!클릭!</button>', // 함수호출
+        data() {    //변수호출
+            return {
+                myData: 200
+            }
+        },
+        methods: {  // 이거 이용해서 찾으라고 함 -> 함수객체 호출
+            childFunc: function() {
+                // alert('버튼이 클릭되었어요!');
+                this.$emit('print_msg',100, 'Hello',{
+                    msg: '전달된 이벤트'
+                }) 
+                // this(vue.component 전체).(emit임의로 정한 이벤트 이름)
+                // root가 핸들러를 갖고 잇음 그걸 인자로 넘겨줌
+            }
+        }
+    });
+    // 
+    new Vue({
+        // 특정위치에 부착
+        el: '#app',
+        method: {
+            printText: function(...args){ //레스트 파라미터 = 배열, 인자로 들어온 것 다 받을 수 잇음
+                console.log('이벤트 발생');
+                console.log(args[0]);  // 100 
+                console.log(args[1]);  // hell
+                console.log(args[2]);  // msg, 전달된 이벤트
+            }
+        }
+    })
+
+    </script>
+
+</body>
+</html>

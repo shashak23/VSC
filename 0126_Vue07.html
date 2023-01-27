@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+
+<body>
+   <!-- 생성한 컴포넌트 차례로 붙이기 -->
+   <!-- 버튼을 생성하고 클릭하면 D에 출력되게 하기 -->
+    <div id="app">
+        local componentC
+        <global-cmpA></global-cmpA>
+        <global-cmpB></global-cmpB>
+        <my-local-componentsC></my-local-componentsC>
+        <my-local-componentsD></my-local-componentsD>
+        <my-local-componentsF v-on:click="childFunc">클릭클릭!</my-local-componentsF>
+
+    </div>
+   
+    <script> 
+       // 지역 컴포넌트 만들기
+       let cmp1 = { 
+            template: '<div>여기는 DIV1입니다</div>'
+        }
+
+        let cmp2 = { 
+            template: '<div>여기는 DIV2입니다</div>'
+        }
+        let cmp3 = { 
+            template: '<div>여기는 DIV3입니다</div>',
+            data: {
+                textfield: {},
+                button: {}
+            }
+        }
+       // 전역 컴포넌트 만들기 
+        Vue.component('global-cmpA',{ // 지역 c,d
+            template: '<div>전역1 컴포넌트</div>',
+            components:{'my-local-componentsC': localCmp,
+                        'my-local-componentsD': localCmp }
+        });
+
+        Vue.component('global-cmpB',{
+            props: {
+             propsData: String,  // 데이터 타입에 대한 생성자 함수 
+           },
+            template: '<div>전역2 컴포넌트</div>',
+            components: { 
+                'my-local-componentsF': localCmp,
+                
+            }
+        });
+
+       // vue instance = Root 생성하기
+       new Vue({
+        el: '#app',
+        data: {
+            message: '소리없는 아우성'
+        },
+        components: { // 각각의 이름을 통해 지역 컴포넌트 등록
+            
+        }
+
+        // event 전달하기(지역 컴포넌트에서 발생하는 이벤트)
+        // event 구독하기
+       })
+       
+    </script>
+
+</body>
+</html>

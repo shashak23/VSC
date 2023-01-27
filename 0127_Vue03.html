@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- vue.js cdn연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+    <!-- vue router cdn 연결 -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+      <!-- 구별할 수 있는 name이라는 속성을 이용해서
+           임의의 이름을 붙여줘요
+           이름이 없는 하나는 무조건 default가 됩니다. -->
+      <router-view name="header"></router-view> 
+      <router-view></router-view>
+      <router-view name="footer"></router-view>
+      <!-- named-view는 하나의 브라우저에 여러개의 뷰를 보여주니까! 여러개~ -->
+    </div>
+       
+    <script>
+      // 3개의 컴포넌트를 각각 만들어야 해요
+      let headerCmp = {
+          template: '<div>여기는 헤더에요!</div>'
+      }
+      
+      let bodyCmp = {
+          template: '<div>여기는 바디에요!</div>'
+      }
+      
+      let footerCmp = {
+          template: '<div>여기는 푸틴아니고 푸터에요!</div>'
+      }
+      // 만들었으니까 라우터 연결하기
+      let router = new VueRouter({
+          routes : [{   // 해당 컴포넌트들이 라우터를 만나서 맵핑을 해야하니까
+               path: '/',   // /는 기본 url
+               components: {  // 여러개니까 여러개라고 -s를 붙여서 해요
+                // 위에 생성한 컴포넌트들을 key에 맞춰 나열해요
+                  header: headerCmp,
+                  footer: footerCmp,
+                  default: bodyCmp
+               }  
+          }] 
+      })
+      // 생성한 컴포넌트의 라우터를 등록하기
+      new Vue({
+        router
+      }).$mount('#app');
+    </script>
+
+</body>
+</html>
