@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoxOffice</title>
+    <!-- vue.js cdn연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
+    <!-- vue router cdn 연결 -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <!-- Axios를 위한 cdn 연결 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+</head>
+<body>
+  <div id="app">
+    <h1> 영화 순위 </h1>
+      <input type="text" v-model="myTxt">
+        <button v-on:click="searchBtn">search!!</button>
+        <br><br>
+          <!-- 카테고리 -->
+          <global-cmp v-bind:movie-list="movieList"></global-cmp>
+        </div>  
+        <script>
+          // 전역 = 리스트 결과 순위, props, v-for을 넣을 공간을 만들고 반복
+          Vue.component('global-cmp', {
+            template:
+            `
+              <table class="category">
+                <thead>
+                  <tr>
+                    <th>순위</th>
+                    <th>포스터</th>
+                    <th>영화제목</th>
+                    <th>관람객수</th>
+                    <th>개봉일</th>
+                  </tr>
+                  </thead>
+                <tbody>
+              <tr v-for="movie in movieList">
+                <td>{{ movie.rank }}</td>
+                <td> <img> </td>
+                <td>{{ movie.movieNm }}</td>
+                <td>{{ movie.audiAcc }}</td>
+                <td>{{ movie.openDt }}</td>
+              </tr>
+            </tbody>
+          </table>`, 
+        props: {
+            movieList: Array 
+        }
+    })
+    // root = api 연결, 리스트
+    let vue = new Vue({
+      data: {
+        myTxt:'',
+        movieList : []
+        },
+      methods: {
+          searchBtn: function(){  // 함수리터럴
+                axios({    // 성공하면 then호출, 실패하면 catch호출
+                    url:'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json',   // 내가 호출할 서버쪽 url
+                    method: 'GET', 
+                    params: { 
+                        key: 'c605b931f51009d4c53d47069e5b40bd',
+                        targetDt: this.myTxt
+                    },
+                    responseType:'json' 
+                }).then(function(result){
+                  let movieList = result.data.boxOfficeResult.dailyBoxOfficeList;
+                  vue.movieList = movieList;
+                  console.log(vue.movieList); 
+                  
+                }).catch(function(){
+                    alert('호출 실패');
+                });   
+              },
+
+
+            }
+      }).$mount('#app');
+  </script>
+</body>
+</html>
