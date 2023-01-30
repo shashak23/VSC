@@ -24,8 +24,7 @@
           // 전역 = 리스트 결과 순위, props, v-for을 넣을 공간을 만들고 반복
           Vue.component('global-cmp', {
             template:
-            `
-              <table class="category">
+            `<table class="category">
                 <thead>
                   <tr>
                     <th>순위</th>
@@ -36,18 +35,24 @@
                   </tr>
                   </thead>
                 <tbody>
-              <tr v-for="movie in movieList">
+              <tr v-for="movie in movieList" v-on="img in imgList">
                 <td>{{ movie.rank }}</td>
-                <td> <img> </td>
+                <td>{{ img.poster }}</td>
                 <td>{{ movie.movieNm }}</td>
                 <td>{{ movie.audiAcc }}</td>
                 <td>{{ movie.openDt }}</td>
               </tr>
+              <input type="checkbox">
             </tbody>
           </table>`, 
         props: {
-            movieList: Array 
-        }
+            movieList: Array,
+            imgList: Array
+        },
+        // foreach(arr, function(idx, item){
+        //     // idx: 반복할 때마다 숫자가 증가하느냐
+        //     // item: 반복할 때마다 추출되는 배열안에 있는 원소
+        // }
     })
     // root = api 연결, 리스트
     let vue = new Vue({
@@ -55,7 +60,7 @@
         myTxt:'',
         movieList : []
         },
-      methods: {
+      methods: { // 여기에 이미지도 같이 하는 게 좋을 것 같은데
           searchBtn: function(){  // 함수리터럴
                 axios({    // 성공하면 then호출, 실패하면 catch호출
                     url:'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json',   // 내가 호출할 서버쪽 url
@@ -69,7 +74,24 @@
                   let movieList = result.data.boxOfficeResult.dailyBoxOfficeList;
                   vue.movieList = movieList;
                   console.log(vue.movieList); 
-                  
+                  // 성공하면 포스터도 가져오기
+                  axios({
+                        url: 'https://dapi.kakao.com/v2/search/image',
+                        type: 'GET',
+                        data: {
+                        query: movie.movieNm +'포스터'
+                        },
+                        headers: {
+                          Authorization: 'KakaoAK 2809648d816ef75bda83cde086b23c4f'
+                        },
+                        success: function(data){
+                        let imgurl = data.documents[0].thumbnail_url;
+                        posterImg.attr('src',imgurl);  
+                        },
+                        error: function(){
+                        alert('이미지 검색 실패')
+                     }
+                   })
                 }).catch(function(){
                     alert('호출 실패');
                 });   
