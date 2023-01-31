@@ -9,17 +9,41 @@
     <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
     <!-- Axios를 위한 cdn 연결 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    
+    <!-- Bootstrap 연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+
 </head>
 <body>
   <div id="app">
     <h1> 영화 순위 </h1>
+    <!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">상세정보</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ mvList }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
       <input type="text" v-model="myTxt">
         <button v-on:click="searchBtn">search!!</button>
         <br><br>
-          <!-- 카테고리 -->
-          <global-cmp v-bind:movie-list="movieList"></global-cmp>
+         <global-cmp v-bind:movie-list="movieList" v-on:mv="mvHandler"></global-cmp>
         </div>  
+
         <script>
           // 전역 = 리스트 결과 순위, props, v-for을 넣을 공간을 만들고 반복
           Vue.component('global-cmp', {
@@ -27,40 +51,82 @@
             `<table class="category">
                 <thead>
                   <tr>
+                    <th>선택</th>
                     <th>순위</th>
                     <th>포스터</th>
                     <th>영화제목</th>
                     <th>관람객수</th>
                     <th>개봉일</th>
+                    <th>삭제</th>
                   </tr>
                   </thead>
-                <tbody>
-              <tr v-for="movie in movieList" v-on="img in imgList">
-                <td>{{ movie.rank }}</td>
-                <td>{{ img.poster }}</td>
-                <td>{{ movie.movieNm }}</td>
-                <td>{{ movie.audiAcc }}</td>
-                <td>{{ movie.openDt }}</td>
-              </tr>
-              <input type="checkbox">
+
+                  <tbody>
+                    <tr v-for="(movie, i) in movieList">
+                      <input type="checkbox" v-model="checked[i]">
+                    <td>{{ movie.rank }}</td>
+                    <td><img v-bind:src="movie.imgurl"></td>
+                    <td>
+                      <a href="#" data-bs-toggle="modal" 
+                          data-bs-target="#staticBackdrop" 
+                            v-on:click="dataBtn(movie.movieCd)">
+                         {{ movie.movieNm }}
+                      </a>
+                      </td>
+                    <td>{{ movie.audiAcc }}</td>
+                    <td>{{ movie.openDt }}</td>
+                    <button type="delete" v-on:click="deBtn(i)">삭제</button>
+                  </tr>
             </tbody>
-          </table>`, 
+          </table>`,
+          // 필요에 따라 v-library를 쓰쟈!
         props: {
-            movieList: Array,
-            imgList: Array
+            movieList: Array
         },
-        // foreach(arr, function(idx, item){
-        //     // idx: 반복할 때마다 숫자가 증가하느냐
-        //     // item: 반복할 때마다 추출되는 배열안에 있는 원소
-        // }
+        data() {
+          return {
+            checked : Array(10),
+          }
+
+        },
+        methods: {
+          deBtn: function(index){
+              // slice ([],1) 행기준으로 하나씩 가져온다 이걸 설정?
+              // 체크리스트로 splice하고 movieList도 splice하기
+              this.checked.splice(index, 1)
+              this.movieList.splice(index, 1)
+          },
+          
+          dataBtn: function(movieCd){
+            this.$emit('mv',movieCd) 
+              // console.log(movieCd)
+             
+          }
+        }
     })
     // root = api 연결, 리스트
     let vue = new Vue({
       data: {
         myTxt:'',
-        movieList : []
+        movieList : [],
+        mvList : {} // 리스트를 만들었고
         },
       methods: { // 여기에 이미지도 같이 하는 게 좋을 것 같은데
+        mvHandler: function(movieCd){
+          axios({    // 상세정보 axios
+                    url:'http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json', 
+                    method: 'GET', 
+                    params: { 
+                        key: 'c605b931f51009d4c53d47069e5b40bd',
+                        movieCd: movieCd	
+                    },
+                    responseType:'json' 
+                }).then(function(result){
+                  let mvList = result.data.movieInfoResult.movieInfo;
+                  vue.mvList=mvList;
+                  console.log(vue.mvList);
+          })
+        },
           searchBtn: function(){  // 함수리터럴
                 axios({    // 성공하면 then호출, 실패하면 catch호출
                     url:'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json',   // 내가 호출할 서버쪽 url
@@ -74,32 +140,54 @@
                   let movieList = result.data.boxOfficeResult.dailyBoxOfficeList;
                   vue.movieList = movieList;
                   console.log(vue.movieList); 
-                  // 성공하면 포스터도 가져오기
-                  axios({
-                        url: 'https://dapi.kakao.com/v2/search/image',
-                        type: 'GET',
-                        data: {
-                        query: movie.movieNm +'포스터'
-                        },
-                        headers: {
-                          Authorization: 'KakaoAK 2809648d816ef75bda83cde086b23c4f'
-                        },
-                        success: function(data){
-                        let imgurl = data.documents[0].thumbnail_url;
-                        posterImg.attr('src',imgurl);  
-                        },
-                        error: function(){
-                        alert('이미지 검색 실패')
-                     }
-                   })
-                }).catch(function(){
-                    alert('호출 실패');
-                });   
-              },
 
+                  // kakao 이미지 호출
+                  // movieList를 foreach로 써서 하나의 값에 다가 axios를 넣으라구? axios의 값을 넣으라구?  
+                  // foreach(arr, function(idx, item){
+                  //     // idx: 반복할 때마다 숫자가 증가하느냐
+                  //     // item: 반복할 때마다 추출되는 배열안에 있는 원소} 
+                  // this.movieList.forEach(function(movieList, index, array) {
+                    vue.movieList.forEach(movie => {
+                    //  console.log(movie.movieNm.attr.axios);
+                    axios({ 
+                      url:'https://dapi.kakao.com/v2/search/image',
+                      method: 'GET', 
+                      headers: { 
+                        Authorization: 'KakaoAK 2809648d816ef75bda83cde086b23c4f',
+                      },
+                      params: {  
+                        query: '포스터' + movie.movieNm
+                      },
+                      responseType:'json' 
+                    }).then(function(result){
+                      let imgurl = result.data.documents[0].thumbnail_url; 
+                      // this.imgList(); 
+                      // vue.imgList[index] = 이미지 주소; 이러면 vue가 배열 내용이 바뀌었다는 걸
+                      // 감지 못하는 경우가 많아서 vue.set이라고 명시적으로 값을 바꾸겠다고 알려주는 것
+                      /*
+                       movie {
+                        imgurl : imgurl
+                        //vue.set는 객체를 변경해줄수도 있고 추가해줄수도 있고 
+                        // 배열도 바꿀 수 있고 
+                      }
+                      */
+                     //Vue.set(movie,'imgurl',imgurl);
+                      vue.$set(movie,'imgurl',imgurl);
+                      // 첫번쨰. Vue.set 를 쓰는 방법이 있고 
+                      // 두번째. this나 변수를 선언하고 $set이렇게 하는 방법이 두가지가 있는데
+                      // console.log(movie);
+                    }).catch(function(err){
+                      console.log('호출 앙대영?', err);
+                    }); 
+                      
+                  })
+                }) .catch(function(){
+                    alert('호출 실패에영?');
+                  });   
 
-            }
-      }).$mount('#app');
+                },
+              }
+            }).$mount('#app');
   </script>
 </body>
 </html>
